@@ -1,0 +1,20 @@
+<%= provide(:title, 'Search flights')%>
+<%= provide(:header, render('layouts/flights_header'))%>
+<% if flash.empty? && @flights.empty? %>
+    <h1>Where are you traveling?</h1>
+<% end %>
+<% unless @flights.empty?%>
+    <%= form_for :booking, method: 'get', url: new_booking_path do |f| %>
+        <%= f.hidden_field(:num_tickets, value: params[:search][:num_tickets]) %>
+        <% @flights.each do |flight| %>
+            <div class='booking row'>
+                <%= render 'shared/itinerary', object: flight%>
+                <div class='col align-self-center'>
+                    <%= f.label :flight_id, 'Select Flight'%>
+                    <%= f.radio_button(:flight_id, flight.id, required: true) %>
+                </div>
+            </div>
+        <% end %>
+        <%= f.submit "Book Flight", class: 'btn btn-primary'%>
+    <% end %>
+<% end %>
