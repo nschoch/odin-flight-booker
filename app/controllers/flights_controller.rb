@@ -8,5 +8,11 @@ class FlightsController < ApplicationController
                               date: DateTime.parse(params[:search][:date]))
       flash.now[:danger] = 'The flight you requested could not be found' if @flights.empty?
     end
+
+    respond_to do |format|
+      format.html
+      format.xml { render :xml => @flights }
+      format.json { render :json => @flights }
+    end
   end
 end
