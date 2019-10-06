@@ -18,6 +18,7 @@ def create
   @flight = Flight.find(params[:booking][:flight_id])
   @booking = @flight.bookings.build(booking_params)
   if @booking&.save
+    PassengerMailer.with(booking: @booking).thank_you_email.deliver_now 
     flash[:success] = 'Flight booked successfully'
     redirect_to booking_path(@booking)
   else
